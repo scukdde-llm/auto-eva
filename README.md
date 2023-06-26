@@ -5,4 +5,8 @@
 * predictor : 大语言模型调用接口
 * rating    : 使用模型评价结果
 
-配置由 `auto_eva.toml` 文件决定
+配置由 `auto_eva.toml` 文件决定  
+测试数据文件和结果文件为 `json` 格式  
+```json
+[{"q":"question", "a": "answer"}]
+```

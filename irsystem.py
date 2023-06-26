@@ -1,6 +1,7 @@
 from splitter import Splitter
 
 import os
+import time
 import faiss
 import openai
 import threading
@@ -51,7 +52,15 @@ class OpenAIEmbeddingIRSystem(IRSystem):
         self.index_ = faiss.IndexFlatL2(1536)
 
     def _get_embedding(self, text: str) -> List[float]:
-        return openai.Embedding.create(input=[text], model=self.model_name_)['data'][0]['embedding']
+        retry_cnt = 0
+        retry_limit = 3
+        while retry_cnt < retry_limit:
+            try:
+                return openai.Embedding.create(input=[text], model=self.model_name_)['data'][0]['embedding']
+            except:
+                retry_cnt += 1
+                if retry_cnt >= retry_limit:
+                    time.sleep(60)
 
     def _build_thread_task(self, rstart: int, rend: int, chunk_list: List[str]):
         for i in range(rstart, rend):

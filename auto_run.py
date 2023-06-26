@@ -1,9 +1,21 @@
 import os
 
-file_list = ["1024_top_3", "2000_top_2"]
+from typing import List
+
+
+def get_file_list(dir: str) -> List[str]:
+    file_list = []
+    for root, _, files in os.walk(dir):
+        for file in files:
+            if file.endswith('.toml'):
+                file_list.append(os.path.join(root, file))
+    return file_list
+
+
+file_list = get_file_list("./config")
 
 for f in file_list:
     os.system("rm auto_eva.toml")
     os.system(
-        f"ln -s ./config/auto_eva_t_0_7_ir_vec_chunk_{f}.toml auto_eva.toml")
+        f"ln -s {f} auto_eva.toml")
     os.system("python3 auto_eva.py")

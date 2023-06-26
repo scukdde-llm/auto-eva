@@ -37,14 +37,14 @@ if __name__ == "__main__":
     with open('auto_eva.toml', 'r') as file:
         data = toml.load(file)
 
-    with open('./test_data/qa/qa.json', 'r') as file:
+    with open('./data/qa.json', 'r') as file:
         qa_data = json.loads(file.read())
 
     predictor = make_predictor(**data["llm"])
     splitter = make_splitter(**data["splitter"])
     irsystem = make_irsystem(splitter=splitter, **data["ir"])
 
-    irsystem.build(["./test_data/qa/data"])
+    irsystem.build(["./data/docs"])
 
     eva_result = []
     for idx, qa in enumerate(qa_data):
